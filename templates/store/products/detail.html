@@ -1,0 +1,64 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block title %}{{product.title}}{% endblock %}
+{% block content %}
+<div class="container">
+    <main class="pt-5">
+        <div class="row g-3">
+            <div class="col-md-5 col-lg-5 order-md-first bg-light">
+                <img class="img-fluid mx-auto d-block" width="200px" alt="Responsive image" src="{{ product.image.url }}">
+            </div>
+            <div class="col-md-7 col-lg-7 ps-md-3 ps-lg-5">
+                <h1 class="mb-0 h4">{{ product.title }}</h1>
+                <p><span class="lead">{{ product.author }}</span> (Author)</p>
+                <p>{{ product.description|slice:":355" }}...</p>
+                <div class="col-12 order-md-last order-1">
+                    <div class="d-grid gap-2">
+        
+                    <div class="d-flex d-flex-inline justify-content-between">
+                    <div><span class="h3 fw600">${{ product.price }}</span><p class="text-muted">includes tax</p></div>
+                        <div class="">
+                            <label for="select">Qty</label>
+                            <select id="select" class="h6" style="width:50px;height:40px;">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <button type="button" id="add-button" value="{{product.id}}" class="btn btn-success fw500">Add to cart</button>
+                    <button type="button" id="add-button" value="{{product.id}}" class="btn btn-light fw500">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none">
+                                <path d="M4.3314 12.0474L12 20L19.6686 12.0474C20.5211 11.1633 21 9.96429 21 8.71405C21 6.11055 18.9648 4 16.4543 4C15.2487 4 14.0925 4.49666 13.24 5.38071L12 6.66667L10.76 5.38071C9.90749 4.49666 8.75128 4 7.54569 4C5.03517 4 3 6.11055 3 8.71405C3 9.96429 3.47892 11.1633 4.3314 12.0474Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<script>
+    $(document).on('click', '#add-button', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "cart:cart_add" %}',
+            data: {
+                productid: $('#add-button').val(),
+                productqty: $('#select option:selected').text(),
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: 'post'
+            },
+            success: function (res) {
+               document.getElementById("cart-qty").innerHTML = res.qty
+            },
+            error: function (xhr, errmsg, err) {}
+        });
+    })
+</script>
+{% endblock %}
