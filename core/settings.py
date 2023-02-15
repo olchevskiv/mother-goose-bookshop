@@ -3,11 +3,11 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-b8a^b6eh9a-6oa$io0(l^pfe3$cvatdijj&$uu#hrf12*i_^lz'
+SECRET_KEY = ''
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['booksies.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['mothergoosebookshop.com', '127.0.0.1', 'localhost']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
